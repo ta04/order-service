@@ -1,0 +1,46 @@
+// order-service/proto/order.proto
+
+syntax = "proto3";
+
+package com.ta04.srv.order;
+
+// Order is a message for order
+message Order {
+    int32 id = 1;
+    int32 product_id = 2;
+    int32 user_id = 3;
+    bool status = 4;
+}
+
+// IndexOrderRequest is a message for requesting all orders
+message IndexOrdersRequest {}
+
+message Response {
+    Order order = 1;
+    Error error = 2;
+    repeated Order orders = 3;
+}
+
+// Error is a message for errors
+message Error {
+    string code = 1;
+    string message = 2;
+}
+
+// OrderService service
+service OrderService {
+    // Method to index all orders
+    rpc IndexOrders(IndexOrdersRequest) returns (Response) {}
+
+    // Method to show a order
+    rpc ShowOrder(Order) returns (Response) {}
+
+    // Method to store a new order
+    rpc StoreOrder(Order) returns (Response) {}
+
+    // Method to update a order's information
+    rpc UpdateOrder(Order) returns (Response) {}
+
+    // Method to delete a order
+    rpc DestroyOrder(Order) returns (Response) {}
+}
