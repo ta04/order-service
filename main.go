@@ -1,4 +1,4 @@
-// product-service/main.go
+// order-service/main.go
 
 package main
 
@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/SleepingNext/product-service/datastore"
-	"github.com/SleepingNext/product-service/handler"
-	pb "github.com/SleepingNext/product-service/proto"
-	"github.com/SleepingNext/product-service/repository"
+	"github.com/SleepingNext/order-service/datastore"
+	"github.com/SleepingNext/order-service/handler"
+	pb "github.com/SleepingNext/order-service/proto"
+	"github.com/SleepingNext/order-service/repository"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
 )
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// Register the handler
-	pb.RegisterProductServiceHandler(s.Server(), h)
+	pb.RegisterOrderServiceHandler(s.Server(), h)
 
 	// Run the server
 	err = s.Run()
