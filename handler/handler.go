@@ -1,18 +1,26 @@
+// order-service/handler/handler.go
+
 package handler
 
 import (
 	"context"
 
-	pb "github.com/SleepingNext/order-service/proto"
-	"github.com/SleepingNext/order-service/repository"
+	orderPB "github.com/SleepingNext/order-service/proto"
+	orderRepo "github.com/SleepingNext/order-service/repository"
 )
 
-type Handler struct {
-	Repo repository.Repository
+type handler struct {
+	repository orderRepo.Repository
 }
 
-func (h *Handler) IndexOrders(ctx context.Context, req *pb.IndexOrdersRequest, res *pb.Response) error {
-	orders, err := h.Repo.Index()
+func NewHandler(repo orderRepo.Repository) *handler {
+	return &handler{
+		repository: repo,
+	}
+}
+
+func (h *handler) IndexOrders(ctx context.Context, req *orderPB.IndexOrdersRequest, res *orderPB.Response) error {
+	orders, err := h.repository.Index()
 	if err != nil {
 		return err
 	}
@@ -23,8 +31,8 @@ func (h *Handler) IndexOrders(ctx context.Context, req *pb.IndexOrdersRequest, r
 	return err
 }
 
-func (h *Handler) ShowOrder(ctx context.Context, req *pb.Order, res *pb.Response) error {
-	order, err := h.Repo.Show(req)
+func (h *handler) ShowOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+	order, err := h.repository.Show(req)
 	if err != nil {
 		return err
 	}
@@ -35,8 +43,8 @@ func (h *Handler) ShowOrder(ctx context.Context, req *pb.Order, res *pb.Response
 	return nil
 }
 
-func (h *Handler) StoreOrder(ctx context.Context, req *pb.Order, res *pb.Response) error {
-	order, err := h.Repo.Store(req)
+func (h *handler) StoreOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+	order, err := h.repository.Store(req)
 	if err != nil {
 		return err
 	}
@@ -47,8 +55,8 @@ func (h *Handler) StoreOrder(ctx context.Context, req *pb.Order, res *pb.Respons
 	return err
 }
 
-func (h *Handler) UpdateOrder(ctx context.Context, req *pb.Order, res *pb.Response) error {
-	order, err := h.Repo.Update(req)
+func (h *handler) UpdateOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+	order, err := h.repository.Update(req)
 	if err != nil {
 		return err
 	}
@@ -59,8 +67,8 @@ func (h *Handler) UpdateOrder(ctx context.Context, req *pb.Order, res *pb.Respon
 	return nil
 }
 
-func (h *Handler) DestroyOrder(ctx context.Context, req *pb.Order, res *pb.Response) error {
-	order, err := h.Repo.Destroy(req)
+func (h *handler) DestroyOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+	order, err := h.repository.Destroy(req)
 	if err != nil {
 		return err
 	}

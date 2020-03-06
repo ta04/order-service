@@ -4,34 +4,41 @@ package main
 
 import (
 	"fmt"
+	"github.com/SleepingNext/order-service/repository/postgres"
 	"log"
 
-	"github.com/SleepingNext/order-service/datastore"
+	"github.com/SleepingNext/order-service/database"
 	"github.com/SleepingNext/order-service/handler"
 	pb "github.com/SleepingNext/order-service/proto"
-	"github.com/SleepingNext/order-service/repository"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
 )
 
 func main() {
-	// Setup the micro instance
+	// Create a new service
 	s := micro.NewService(
 		micro.Name("com.ta04.srv.order"),
 	)
 
+	// Initialize the service
 	s.Init()
 
 	// Connect to Postgres
-	db, err := datastore.ConnectPostgres()
+	db, err := database.OpenPostgresConnection()
 	if err != nil {
 		log.Fatalf("failed to connect to postgres: %v", err)
 	}
+	defer db.Close()
 
-	// Initialize the handler
-	h := &handler.Handler{
-		Repo: &repository.PostgresRepository{DB: db},
+	err = db.Ping()
+	if err != nil {
+		panic(err)
 	}
+
+	// Create a new handler
+	h := handler.NewHandler(&postgres.Repository{
+		DB: db,
+	})
 
 	// Register the handler
 	pb.RegisterOrderServiceHandler(s.Server(), h)

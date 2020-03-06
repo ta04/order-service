@@ -12,35 +12,36 @@ message Order {
     bool status = 4;
 }
 
-// IndexOrderRequest is a message for requesting all orders
+// IndexOrderRequest is a message for IndexOrders
 message IndexOrdersRequest {}
 
+// Response is a response message
 message Response {
     Order order = 1;
     Error error = 2;
     repeated Order orders = 3;
 }
 
-// Error is a message for errors
+// Error is an error message
 message Error {
     string code = 1;
     string message = 2;
 }
 
-// OrderService service
+// OrderService is a service for order-service
 service OrderService {
-    // Method to index all orders
+    // IndexOrders is a method to index all orders
     rpc IndexOrders(IndexOrdersRequest) returns (Response) {}
 
-    // Method to show a order
+    // ShowOrder is a method to show a order
     rpc ShowOrder(Order) returns (Response) {}
 
-    // Method to store a new order
+    // StoreOrder is a method to store a new order
     rpc StoreOrder(Order) returns (Response) {}
 
-    // Method to update a order's information
+    // UpdateOrder is a method to update a order
     rpc UpdateOrder(Order) returns (Response) {}
 
-    // Method to delete a order
+    // DestroyOrder is a method to delete a order
     rpc DestroyOrder(Order) returns (Response) {}
 }
