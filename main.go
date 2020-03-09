@@ -9,7 +9,7 @@ import (
 
 	"github.com/SleepingNext/order-service/database"
 	"github.com/SleepingNext/order-service/handler"
-	pb "github.com/SleepingNext/order-service/proto"
+	orderPB "github.com/SleepingNext/order-service/proto"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
 )
@@ -41,7 +41,7 @@ func main() {
 	})
 
 	// Register the handler
-	pb.RegisterOrderServiceHandler(s.Server(), h)
+	orderPB.RegisterOrderServiceHandler(s.Server(), h)
 
 	// Run the server
 	err = s.Run()
