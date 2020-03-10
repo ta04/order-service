@@ -15,7 +15,7 @@ type Repository struct {
 
 func (repo *Repository) Index() (orders []*orderPB.Order, err error) {
 	var id, productId, userId int32
-	var status bool
+	var status string
 
 	query := "SELECT * FROM orders"
 	rows, err := repo.DB.Query(query)
@@ -40,9 +40,37 @@ func (repo *Repository) Index() (orders []*orderPB.Order, err error) {
 	return orders, err
 }
 
+
+func (repo *Repository) IndexByUserID(user *orderPB.User) (orders []*orderPB.Order, err error) {
+	var id, productId, userId int32
+	var status string
+
+	query := fmt.Sprintf("SELECT * FROM orders WHERE user_id = %d", user.Id)
+	rows, err := repo.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		err := rows.Scan(&id, &productId, &userId, &status)
+		if err != nil {
+			return nil, err
+		}
+		order := &orderPB.Order{
+			Id:        id,
+			ProductId: productId,
+			UserId:    userId,
+			Status:    status,
+		}
+		orders = append(orders, order)
+	}
+
+	return orders, err
+}
+
 func (repo *Repository) Show(order *orderPB.Order) (*orderPB.Order, error) {
 	var id, productId, userId int32
-	var status bool
+	var status string
 
 	query := fmt.Sprintf("SELECT * FROM orders WHERE id = %d", order.Id)
 	err := repo.DB.QueryRow(query).Scan(&id, &productId, &userId, &status)

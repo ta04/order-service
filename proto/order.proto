@@ -9,7 +9,27 @@ message Order {
     int32 id = 1;
     int32 product_id = 2;
     int32 user_id = 3;
-    bool status = 4;
+    string status = 4;
+}
+
+// User is a message for user
+message User {
+    int32 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string username = 4;
+    string password = 5;
+    string email_address = 6;
+    string phone_number = 7;
+    string date_of_birth = 8;
+    string address = 9;
+    string role = 10;
+    string credit_card_number = 11;
+    string credit_card_type = 12;
+    string credit_card_expired_month = 13;
+    string credit_card_expired_year = 14;
+    string credit_card_cvv = 15;
+    string status = 16;
 }
 
 // IndexOrderRequest is a message for IndexOrders
@@ -32,6 +52,9 @@ message Error {
 service OrderService {
     // IndexOrders is a method to index all orders
     rpc IndexOrders(IndexOrdersRequest) returns (Response) {}
+
+    // IndexOrdersByUserID is a method to index all orders by the user's id
+    rpc IndexOrdersByUserID(User) returns (Response) {}
 
     // ShowOrder is a method to show a order
     rpc ShowOrder(Order) returns (Response) {}

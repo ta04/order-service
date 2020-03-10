@@ -31,6 +31,18 @@ func (h *handler) IndexOrders(ctx context.Context, req *orderPB.IndexOrdersReque
 	return err
 }
 
+func (h *handler) IndexOrdersByUserID(ctx context.Context, req *orderPB.User, res *orderPB.Response) error {
+	orders, err := h.repository.IndexByUserID(req)
+	if err != nil {
+		return err
+	}
+
+	res.Orders = orders
+	res.Error = nil
+
+	return err
+}
+
 func (h *handler) ShowOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
 	order, err := h.repository.Show(req)
 	if err != nil {

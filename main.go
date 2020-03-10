@@ -3,7 +3,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/SleepingNext/order-service/repository/postgres"
 	"log"
 
@@ -46,6 +45,6 @@ func main() {
 	// Run the server
 	err = s.Run()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 }

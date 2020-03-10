@@ -8,6 +8,7 @@ import (
 
 type Repository interface {
 	Index() ([]*orderPB.Order, error)
+	IndexByUserID(*orderPB.User) ([]*orderPB.Order, error)
 	Show(*orderPB.Order) (*orderPB.Order, error)
 	Store(*orderPB.Order) (*orderPB.Order, error)
 	Update(*orderPB.Order) (*orderPB.Order, error)
