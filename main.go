@@ -67,7 +67,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		log.Println("authenticating with token: ", token)
 
 		// Validate the token
-		authClient := authPB.NewAuthServiceClient("go.micro.srv.auth", client.DefaultClient)
+		authClient := authPB.NewAuthServiceClient("com.ta04.srv.auth", client.DefaultClient)
 		_, err := authClient.ValidateToken(context.Background(), &authPB.Token{
 			Token: token,
 		})
