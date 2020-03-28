@@ -5,11 +5,12 @@ package main
 import (
 	"context"
 	"errors"
+	"log"
+
 	"github.com/SleepingNext/order-service/repository/postgres"
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
-	"log"
 
 	authPB "github.com/SleepingNext/auth-service/proto"
 	"github.com/SleepingNext/order-service/database"
@@ -24,6 +25,7 @@ func main() {
 	s := micro.NewService(
 		micro.Name("com.ta04.srv.order"),
 		micro.WrapHandler(AuthWrapper),
+		micro.Address(":50052"),
 	)
 
 	// Initialize the service

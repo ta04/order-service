@@ -15,3 +15,5 @@ require (
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 )
+
+// +heroku goVersion go1.13.8
