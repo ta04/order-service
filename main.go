@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"os"
 
 	"github.com/SleepingNext/order-service/repository/postgres"
 	"github.com/micro/go-micro/client"
@@ -18,14 +19,25 @@ import (
 	orderPB "github.com/SleepingNext/order-service/proto"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-plugins/registry/consul"
 )
 
 func main() {
+	// Take or set the port
+	port := ":" + os.Getenv("PORT")
+	if port == ":" {
+		port = ":50052"
+	}
+
+	// Create a new registry
+	registry := consul.NewRegistry()
+
 	// Create a new service
 	s := micro.NewService(
 		micro.Name("com.ta04.srv.order"),
 		micro.WrapHandler(AuthWrapper),
-		micro.Address(":50052"),
+		micro.Address(port),
+		micro.Registry(registry),
 	)
 
 	// Initialize the service

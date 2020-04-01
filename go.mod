@@ -10,6 +10,7 @@ require (
 	github.com/lib/pq v1.3.0
 	github.com/lucas-clemente/quic-go v0.14.1 // indirect
 	github.com/micro/go-micro v1.18.0
+	github.com/micro/go-plugins/registry/consul v0.0.0-20200119172437-4fe21aa238fd
 	github.com/nats-io/nats-server/v2 v2.1.4 // indirect
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20200122045848-3419fae592fc // indirect
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
