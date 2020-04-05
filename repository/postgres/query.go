@@ -13,25 +13,26 @@ type Repository struct {
 	DB *sql.DB
 }
 
+// Index will index all active orders
 func (repo *Repository) Index() (orders []*orderPB.Order, err error) {
-	var id, productId, userId int32
+	var id, productID, userID int32
 	var status string
 
-	query := "SELECT * FROM orders"
+	query := "SELECT * FROM orders WHERE status = 'active'"
 	rows, err := repo.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
-		err := rows.Scan(&id, &productId, &userId, &status)
+		err := rows.Scan(&id, &productID, &userID, &status)
 		if err != nil {
 			return nil, err
 		}
 		order := &orderPB.Order{
 			Id:        id,
-			ProductId: productId,
-			UserId:    userId,
+			ProductId: productID,
+			UserId:    userID,
 			Status:    status,
 		}
 		orders = append(orders, order)
@@ -40,26 +41,26 @@ func (repo *Repository) Index() (orders []*orderPB.Order, err error) {
 	return orders, err
 }
 
-
+// IndexByUserID will index all active orders by it's userID
 func (repo *Repository) IndexByUserID(user *orderPB.User) (orders []*orderPB.Order, err error) {
-	var id, productId, userId int32
+	var id, productID, userID int32
 	var status string
 
-	query := fmt.Sprintf("SELECT * FROM orders WHERE user_id = %d", user.Id)
+	query := fmt.Sprintf("SELECT * FROM orders WHERE user_id = %d AND status = 'active'", user.Id)
 	rows, err := repo.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
-		err := rows.Scan(&id, &productId, &userId, &status)
+		err := rows.Scan(&id, &productID, &userID, &status)
 		if err != nil {
 			return nil, err
 		}
 		order := &orderPB.Order{
 			Id:        id,
-			ProductId: productId,
-			UserId:    userId,
+			ProductId: productID,
+			UserId:    userID,
 			Status:    status,
 		}
 		orders = append(orders, order)
@@ -68,20 +69,21 @@ func (repo *Repository) IndexByUserID(user *orderPB.User) (orders []*orderPB.Ord
 	return orders, err
 }
 
+// Show will show an active order by it's id
 func (repo *Repository) Show(order *orderPB.Order) (*orderPB.Order, error) {
-	var id, productId, userId int32
+	var id, productID, userID int32
 	var status string
 
-	query := fmt.Sprintf("SELECT * FROM orders WHERE id = %d", order.Id)
-	err := repo.DB.QueryRow(query).Scan(&id, &productId, &userId, &status)
+	query := fmt.Sprintf("SELECT * FROM orders WHERE id = %d AND status = 'active'", order.Id)
+	err := repo.DB.QueryRow(query).Scan(&id, &productID, &userID, &status)
 	if err != nil {
 		return nil, err
 	}
 
 	return &orderPB.Order{
 		Id:        id,
-		ProductId: productId,
-		UserId:    userId,
+		ProductId: productID,
+		UserId:    userID,
 		Status:    status,
 	}, err
 }
