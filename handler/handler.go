@@ -1,26 +1,44 @@
-// order-service/handler/handler.go
+/*
+Dear Programmers,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*                                                 *
+*	This file belongs to Kevin Veros Hamonangan   *
+*	and	Fandi Fladimir Dachi and is a part of     *
+*	our	last project as the student of Del        *
+*	Institute of Technology, Sitoluama.           *
+*	Please contact us via Instagram:              *
+*	sleepingnext and fandi_dachi                  *
+*	before copying this file.                     *
+*	Thank you, buddy. 😊                          *
+*                                                 *
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 package handler
 
 import (
 	"context"
 
-	orderPB "github.com/SleepingNext/order-service/proto"
-	orderRepo "github.com/SleepingNext/order-service/repository"
+	orderPB "github.com/ta04/order-service/proto"
+	orderRepo "github.com/ta04/order-service/repository"
 )
 
-type handler struct {
+// Handler is the handler of order service
+type Handler struct {
 	repository orderRepo.Repository
 }
 
-func NewHandler(repo orderRepo.Repository) *handler {
-	return &handler{
+// NewHandler creates a new order service handler
+func NewHandler(repo orderRepo.Repository) *Handler {
+	return &Handler{
 		repository: repo,
 	}
 }
 
-func (h *handler) IndexOrders(ctx context.Context, req *orderPB.IndexOrdersRequest, res *orderPB.Response) error {
-	orders, err := h.repository.Index()
+// IndexOrders indexes the orders
+func (h *Handler) IndexOrders(ctx context.Context, req *orderPB.IndexOrdersRequest, res *orderPB.Response) error {
+	orders, err := h.repository.Index(req)
 	if err != nil {
 		return err
 	}
@@ -31,7 +49,8 @@ func (h *handler) IndexOrders(ctx context.Context, req *orderPB.IndexOrdersReque
 	return err
 }
 
-func (h *handler) IndexOrdersByUserID(ctx context.Context, req *orderPB.User, res *orderPB.Response) error {
+// IndexOrdersByUserID indexes the orders by user ID
+func (h *Handler) IndexOrdersByUserID(ctx context.Context, req *orderPB.User, res *orderPB.Response) error {
 	orders, err := h.repository.IndexByUserID(req)
 	if err != nil {
 		return err
@@ -43,7 +62,8 @@ func (h *handler) IndexOrdersByUserID(ctx context.Context, req *orderPB.User, re
 	return err
 }
 
-func (h *handler) ShowOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+// ShowOrder shows an order by ID
+func (h *Handler) ShowOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
 	order, err := h.repository.Show(req)
 	if err != nil {
 		return err
@@ -55,7 +75,8 @@ func (h *handler) ShowOrder(ctx context.Context, req *orderPB.Order, res *orderP
 	return nil
 }
 
-func (h *handler) StoreOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+// StoreOrder stores a new order
+func (h *Handler) StoreOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
 	order, err := h.repository.Store(req)
 	if err != nil {
 		return err
@@ -67,7 +88,8 @@ func (h *handler) StoreOrder(ctx context.Context, req *orderPB.Order, res *order
 	return err
 }
 
-func (h *handler) UpdateOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
+// UpdateOrder updates an order
+func (h *Handler) UpdateOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
 	order, err := h.repository.Update(req)
 	if err != nil {
 		return err
@@ -77,16 +99,4 @@ func (h *handler) UpdateOrder(ctx context.Context, req *orderPB.Order, res *orde
 	res.Error = nil
 
 	return nil
-}
-
-func (h *handler) DestroyOrder(ctx context.Context, req *orderPB.Order, res *orderPB.Response) error {
-	order, err := h.repository.Destroy(req)
-	if err != nil {
-		return err
-	}
-
-	res.Order = order
-	res.Error = nil
-
-	return err
 }

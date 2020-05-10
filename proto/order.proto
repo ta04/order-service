@@ -1,10 +1,24 @@
-// order-service/proto/order.proto
+/*
+Dear Programmers,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*                                                 *
+*	This file belongs to Kevin Veros Hamonangan   *
+*	and	Fandi Fladimir Dachi and is a part of     *
+*	our	last project as the student of Del        *
+*	Institute of Technology, Sitoluama.           *
+*	Please contact us via Instagram:              *
+*	sleepingnext and fandi_dachi                  *
+*	before copying this file.                     *
+*	Thank you, buddy. 😊                          *
+*                                                 *
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 syntax = "proto3";
 
 package com.ta04.srv.order;
 
-// Order is a message for order
 message Order {
     int32 id = 1;
     int32 product_id = 2;
@@ -12,59 +26,43 @@ message Order {
     string status = 4;
 }
 
-// User is a message for user
 message User {
     int32 id = 1;
     string first_name = 2;
     string last_name = 3;
     string username = 4;
-    string password = 5;
-    string email_address = 6;
-    string phone_number = 7;
-    string date_of_birth = 8;
-    string address = 9;
-    string role = 10;
-    string credit_card_number = 11;
-    string credit_card_type = 12;
-    string credit_card_expired_month = 13;
-    string credit_card_expired_year = 14;
-    string credit_card_cvv = 15;
-    string status = 16;
+    int32 password = 5;
+    int32 prime_number = 6;
+    int32 generator_value = 7;
+    string email_address = 8;
+    string phone_number = 9;
+    string date_of_birth = 10;
+    string address = 11;
+    string role = 12;
+    string status = 13;
 }
 
-// IndexOrderRequest is a message for IndexOrders
 message IndexOrdersRequest {}
 
-// Response is a response message
 message Response {
     Order order = 1;
     Error error = 2;
     repeated Order orders = 3;
 }
 
-// Error is an error message
 message Error {
     string code = 1;
     string message = 2;
 }
 
-// OrderService is a service for order-service
 service OrderService {
-    // IndexOrders is a method to index all orders
     rpc IndexOrders(IndexOrdersRequest) returns (Response) {}
 
-    // IndexOrdersByUserID is a method to index all orders by the user's id
     rpc IndexOrdersByUserID(User) returns (Response) {}
 
-    // ShowOrder is a method to show a order
     rpc ShowOrder(Order) returns (Response) {}
 
-    // StoreOrder is a method to store a new order
     rpc StoreOrder(Order) returns (Response) {}
 
-    // UpdateOrder is a method to update a order
     rpc UpdateOrder(Order) returns (Response) {}
-
-    // DestroyOrder is a method to delete a order
-    rpc DestroyOrder(Order) returns (Response) {}
 }
