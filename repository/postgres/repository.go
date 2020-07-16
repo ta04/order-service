@@ -20,23 +20,29 @@ package postgres
 import (
 	"fmt"
 
-	orderPB "github.com/ta04/order-service/proto"
+	proto "github.com/ta04/order-service/model/proto"
 )
 
-// Store stores a new order
-func (repo *Postgres) Store(order *orderPB.Order) (*orderPB.Order, error) {
+// CreateOne will create a new order
+func (postgres *Postgres) CreateOne(order *proto.Order) (*proto.Order, error) {
 	query := fmt.Sprintf("INSERT INTO orders (product_id, user_id, status)"+
 		" VALUES (%d, %d, 'waiting for payment')", order.ProductId, order.UserId)
-	_, err := repo.DB.Exec(query)
+	_, err := postgres.DB.Exec(query)
+	if err != nil {
+		return nil, err
+	}
 
 	return order, err
 }
 
-// Update updates an order
-func (repo *Postgres) Update(order *orderPB.Order) (*orderPB.Order, error) {
+// UpdateOne will update a product
+func (postgres *Postgres) UpdateOne(order *proto.Order) (*proto.Order, error) {
 	query := fmt.Sprintf("UPDATE orders SET product_id = %d, user_id = %d, status = '%s'"+
 		" WHERE id = %d", order.ProductId, order.UserId, order.Status, order.Id)
-	_, err := repo.DB.Exec(query)
+	_, err := postgres.DB.Exec(query)
+	if err != nil {
+		return nil, err
+	}
 
 	return order, err
 }

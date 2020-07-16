@@ -15,18 +15,18 @@ Dear Programmers,
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-package repository
+package database
 
 import (
-	proto "github.com/ta04/order-service/model/proto"
+	"database/sql"
+	"fmt"
+
+	"github.com/ta04/order-service/internal/config"
 )
 
-// Repository is the interface of repositories.
-// As there are number of repositories can be used.
-type Repository interface {
-	GetAllByUserID(request *proto.GetAllOrdersRequest) ([]*proto.Order, error)
-	GetAll(request *proto.GetAllOrdersRequest) ([]*proto.Order, error)
-	GetOne(request *proto.GetOneOrderRequest) (*proto.Order, error)
-	CreateOne(order *proto.Order) (*proto.Order, error)
-	UpdateOne(order *proto.Order) (*proto.Order, error)
+// OpenPostgresConnection opens a connection to postgres database
+func OpenPostgresConnection() (*sql.DB, error) {
+	return sql.Open("postgres", fmt.Sprintf("host=%s port =%d user=%s password=%s dbname=%s sslmode=disable",
+		config.PostgresHost(), config.PostgresPort(), config.PostgresUser(),
+		config.PostgresPassword(), config.PostgresDBName()))
 }

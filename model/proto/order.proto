@@ -42,7 +42,14 @@ message User {
     string status = 13;
 }
 
-message IndexOrdersRequest {}
+message GetAllOrdersRequest {
+    int32 user_id = 1;
+    string status = 2;
+}
+
+message GetOneOrderRequest {
+    int32 id = 1;
+}
 
 message Response {
     Order order = 1;
@@ -51,18 +58,20 @@ message Response {
 }
 
 message Error {
-    string code = 1;
+    int32 code = 1;
     string message = 2;
 }
 
 service OrderService {
-    rpc IndexOrders(IndexOrdersRequest) returns (Response) {}
+    rpc GetAllOrders (GetAllOrdersRequest) returns (Response) {
+    }
 
-    rpc IndexOrdersByUserID(User) returns (Response) {}
+    rpc GetOneOrder (GetOneOrderRequest) returns (Response) {
+    }
 
-    rpc ShowOrder(Order) returns (Response) {}
+    rpc CreateOneOrder (Order) returns (Response) {
+    }
 
-    rpc StoreOrder(Order) returns (Response) {}
-
-    rpc UpdateOrder(Order) returns (Response) {}
+    rpc UpdateOneOrder (Order) returns (Response) {
+    }
 }

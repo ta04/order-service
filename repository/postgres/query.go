@@ -21,7 +21,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	orderPB "github.com/ta04/order-service/proto"
+	proto "github.com/ta04/order-service/model/proto"
 )
 
 // Postgres is the implementor of Postgres interface
@@ -29,13 +29,21 @@ type Postgres struct {
 	DB *sql.DB
 }
 
-// Index indexes all orders
-func (repo *Postgres) Index(req *orderPB.IndexOrdersRequest) (orders []*orderPB.Order, err error) {
+// NewPostgres will create a new postgres instance
+func NewPostgres(db *sql.DB) *Postgres {
+	return &Postgres{
+		DB: db,
+	}
+}
+
+// GetAllByUserID will get all orders by user id
+func (postgres *Postgres) GetAllByUserID(request *proto.GetAllOrdersRequest) ([]*proto.Order, error) {
 	var id, productID, userID int32
 	var status string
+	var orders []*proto.Order
 
-	query := "SELECT * FROM orders"
-	rows, err := repo.DB.Query(query)
+	query := fmt.Sprintf("SELECT * FROM orders WHERE user_id = %d AND status = '%s'", request.UserId, request.Status)
+	rows, err := postgres.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +53,7 @@ func (repo *Postgres) Index(req *orderPB.IndexOrdersRequest) (orders []*orderPB.
 		if err != nil {
 			return nil, err
 		}
-		order := &orderPB.Order{
+		order := &proto.Order{
 			Id:        id,
 			ProductId: productID,
 			UserId:    userID,
@@ -57,13 +65,14 @@ func (repo *Postgres) Index(req *orderPB.IndexOrdersRequest) (orders []*orderPB.
 	return orders, err
 }
 
-// IndexByUserID indexes all orders by userID
-func (repo *Postgres) IndexByUserID(user *orderPB.User) (orders []*orderPB.Order, err error) {
+// GetAll will get all orders
+func (postgres *Postgres) GetAll(request *proto.GetAllOrdersRequest) ([]*proto.Order, error) {
 	var id, productID, userID int32
 	var status string
+	var orders []*proto.Order
 
-	query := fmt.Sprintf("SELECT * FROM orders WHERE user_id = %d", user.Id)
-	rows, err := repo.DB.Query(query)
+	query := fmt.Sprintf("SELECT * FROM orders WHERE status = '%s'", request.Status)
+	rows, err := postgres.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +82,7 @@ func (repo *Postgres) IndexByUserID(user *orderPB.User) (orders []*orderPB.Order
 		if err != nil {
 			return nil, err
 		}
-		order := &orderPB.Order{
+		order := &proto.Order{
 			Id:        id,
 			ProductId: productID,
 			UserId:    userID,
@@ -85,18 +94,18 @@ func (repo *Postgres) IndexByUserID(user *orderPB.User) (orders []*orderPB.Order
 	return orders, err
 }
 
-// Show shows an order by id
-func (repo *Postgres) Show(order *orderPB.Order) (*orderPB.Order, error) {
+// GetOne will get an order by id
+func (postgres *Postgres) GetOne(request *proto.GetOneOrderRequest) (*proto.Order, error) {
 	var id, productID, userID int32
 	var status string
 
-	query := fmt.Sprintf("SELECT * FROM orders WHERE id = %d", order.Id)
-	err := repo.DB.QueryRow(query).Scan(&id, &productID, &userID, &status)
+	query := fmt.Sprintf("SELECT * FROM orders WHERE id = %d", request.Id)
+	err := postgres.DB.QueryRow(query).Scan(&id, &productID, &userID, &status)
 	if err != nil {
 		return nil, err
 	}
 
-	return &orderPB.Order{
+	return &proto.Order{
 		Id:        id,
 		ProductId: productID,
 		UserId:    userID,
