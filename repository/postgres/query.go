@@ -53,6 +53,7 @@ func (postgres *Postgres) GetAllByUserID(request *proto.GetAllOrdersRequest) (*[
 		if err != nil {
 			return nil, err
 		}
+
 		order := &proto.Order{
 			Id:        id,
 			ProductId: productID,
@@ -82,6 +83,7 @@ func (postgres *Postgres) GetAll(request *proto.GetAllOrdersRequest) (*[]*proto.
 		if err != nil {
 			return nil, err
 		}
+
 		order := &proto.Order{
 			Id:        id,
 			ProductId: productID,
