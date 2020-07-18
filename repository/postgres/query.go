@@ -37,7 +37,7 @@ func NewPostgres(db *sql.DB) *Postgres {
 }
 
 // GetAllByUserID will get all orders by user id
-func (postgres *Postgres) GetAllByUserID(request *proto.GetAllOrdersRequest) ([]*proto.Order, error) {
+func (postgres *Postgres) GetAllByUserID(request *proto.GetAllOrdersRequest) (*[]*proto.Order, error) {
 	var id, productID, userID int32
 	var status string
 	var orders []*proto.Order
@@ -62,11 +62,11 @@ func (postgres *Postgres) GetAllByUserID(request *proto.GetAllOrdersRequest) ([]
 		orders = append(orders, order)
 	}
 
-	return orders, err
+	return &orders, err
 }
 
 // GetAll will get all orders
-func (postgres *Postgres) GetAll(request *proto.GetAllOrdersRequest) ([]*proto.Order, error) {
+func (postgres *Postgres) GetAll(request *proto.GetAllOrdersRequest) (*[]*proto.Order, error) {
 	var id, productID, userID int32
 	var status string
 	var orders []*proto.Order
@@ -91,7 +91,7 @@ func (postgres *Postgres) GetAll(request *proto.GetAllOrdersRequest) ([]*proto.O
 		orders = append(orders, order)
 	}
 
-	return orders, err
+	return &orders, err
 }
 
 // GetOne will get an order by id

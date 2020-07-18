@@ -47,7 +47,7 @@ func (handler *Handler) GetAllOrders(ctx context.Context, req *proto.GetAllOrder
 		return errors.New(err.Message)
 	}
 
-	res.Orders = orders
+	res.Orders = *orders
 	res.Error = nil
 
 	return nil

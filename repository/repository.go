@@ -24,8 +24,8 @@ import (
 // Repository is the interface of repositories.
 // As there are number of repositories can be used.
 type Repository interface {
-	GetAllByUserID(request *proto.GetAllOrdersRequest) ([]*proto.Order, error)
-	GetAll(request *proto.GetAllOrdersRequest) ([]*proto.Order, error)
+	GetAllByUserID(request *proto.GetAllOrdersRequest) (*[]*proto.Order, error)
+	GetAll(request *proto.GetAllOrdersRequest) (*[]*proto.Order, error)
 	GetOne(request *proto.GetOneOrderRequest) (*proto.Order, error)
 	CreateOne(order *proto.Order) (*proto.Order, error)
 	UpdateOne(order *proto.Order) (*proto.Order, error)
