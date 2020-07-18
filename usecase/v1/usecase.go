@@ -66,7 +66,7 @@ func (usecase *Usecase) GetOne(request *proto.GetOneOrderRequest) (*proto.Order,
 	if err != nil {
 		return nil, &proto.Error{
 			Code:    http.StatusInternalServerError,
-			Message: http.StatusText(http.StatusInternalServerError),
+			Message: err.Error(),
 		}
 	}
 
