@@ -35,10 +35,10 @@ func (usecase *Usecase) GetAll(request *proto.GetAllOrdersRequest) (*[]*proto.Or
 	var err error
 	if request.UserId != 0 {
 		orders, err = usecase.Repository.GetAllByUserID(request)
-		
 	} else {
 		orders, err = usecase.Repository.GetAll(request)
-	}	
+	}
+
 	if orders == nil || len(*orders) <= 0 {
 		return nil, &proto.Error{
 			Code:    http.StatusInternalServerError,
@@ -50,6 +50,7 @@ func (usecase *Usecase) GetAll(request *proto.GetAllOrdersRequest) (*[]*proto.Or
 			Code:    http.StatusInternalServerError,
 			Message: err.Error(),
 		}
+	}
 
 	return orders, nil
 }
